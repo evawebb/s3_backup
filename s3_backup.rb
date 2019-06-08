@@ -37,14 +37,15 @@ end.to_h
 
 s3_nonlocal_keys = s3_files.keys
 local_files.each do |path, info|
+  escaped_path = path.gsub("'", "'\"'\"'")
   if s3_files.has_key?(path)
     s3_nonlocal_keys.delete(path)
     if info[:modified] > s3_files[path][:modified]
-      puts `#{aws_bin} s3 cp '#{backup_dir}/#{path}' 's3://#{bucket}/#{path}'`.split("\r")[-1]
+      puts `#{aws_bin} s3 cp '#{backup_dir}/#{escaped_path}' 's3://#{bucket}/#{escaped_path}'`.split("\r")[-1]
     end
   else
     s3_nonlocal_keys.delete(path)
-    puts `#{aws_bin} s3 cp '#{backup_dir}/#{path}' 's3://#{bucket}/#{path}'`.split("\r")[-1]
+    puts `#{aws_bin} s3 cp '#{backup_dir}/#{escaped_path}' 's3://#{bucket}/#{escaped_path}'`.split("\r")[-1]
   end
 end
 
