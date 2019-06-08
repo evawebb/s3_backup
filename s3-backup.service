@@ -1,0 +1,6 @@
+[Unit]
+Description=back up files to s3
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/lib/s3_backup/s3_backup

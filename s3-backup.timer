@@ -1,0 +1,10 @@
+[Unit]
+Description=back up files to s3 weekly
+
+[Timer]
+OnCalendar=weekly
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+
