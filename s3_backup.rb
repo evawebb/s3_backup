@@ -6,6 +6,27 @@ aws_bin = ENV["AWS_BIN"]
 backup_dir = ENV["BACKUP_DIR"]
 bucket = ENV["BUCKET"]
 
+first_backoff_secs = 15
+backoff_tries = 5
+
+while backoff_tries > 0
+  puts "Checking network..."
+  network_check = `ping -c 1 archlinux.org 2>&1`
+
+  if network_check =~ /1 received/
+    break
+  else
+    sleep first_backoff_secs
+    first_backoff_secs *= 2
+    backoff_tries -= 1
+  end
+end
+
+if backoff_tries == 0
+  puts "Could not reach the internet. Giving up."
+  exit 1
+end
+
 s3_files = `#{aws_bin} s3 ls --recursive s3://#{bucket}/`
 s3_files = s3_files.split("\n").map do |s| 
   out = s.split(/\s+/).map { |ss| ss.strip }
