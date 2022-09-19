@@ -1,1 +1,0 @@
-- Include a file that records the S3 modified dates every time files are pushed up. This way, I can have multiple sources syncing through the bucket.

@@ -3,6 +3,8 @@ Description=back up files to s3
 
 [Service]
 Type=oneshot
-User=<<BACKUP_USER>>
-Group=<<BACKUP_USER>>
-ExecStart=/usr/local/lib/s3_backup/s3_backup
+User=eva
+Group=eva
+Environment=AWS_BIN=/usr/local/bin/aws
+Environment=BUCKET=ewebb-backup
+ExecStart=ruby /usr/local/lib/s3_backup/s3_backup.rb
